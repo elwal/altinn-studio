@@ -9,7 +9,7 @@ spec:
   - ReadWriteMany
   azureFile:
     secretName: azure-secret
-    shareName: altinndevstorageaccount
+    shareName: altinnstoragerepo
     readOnly: false
   claimRef:
     name: altinn-storage-repo-premium-volume-claim
