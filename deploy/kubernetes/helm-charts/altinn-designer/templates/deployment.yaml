@@ -62,12 +62,6 @@ spec:
       volumes:
       {{- range $volume := .Values.volumes }}
         - name: {{ $volume.name }}
-          {{- if $volume.azureFile }}
-          azureFile:
-            secretName:  {{ $volume.azureFile.secretName }}
-            shareName:  {{ $volume.azureFile.shareName }}
-            readOnly:  {{ $volume.azureFile.readOnly }}
-          {{- end }}
           {{- if $volume.persistentVolumeClaim }}
           persistentVolumeClaim:
             claimName: {{ $volume.persistentVolumeClaim.claimName }}
