@@ -62,14 +62,14 @@ volumeMounts:
     mountPath: "/altinn-appsettings"
 
 volumes:
-  - name: altinn-repo-storage
-    azureFile:
-      secretName: azure-secret
-      shareName: altinndevstorageaccount
-      readOnly: false
   # - name: altinn-repo-storage
-  #   persistentVolumeClaim:
-  #     claimName: altinn-storage-repo-volume-claim
+  #   azureFile:
+  #     secretName: azure-secret
+  #     shareName: aksshare
+  #     readOnly: false
+  - name: altinn-repo-storage
+    persistentVolumeClaim:
+      claimName: altinn-storage-repo-premium-volume-claim
   - name: altinn-appsettings
     secret:
       secretName: altinn-appsettings-secret

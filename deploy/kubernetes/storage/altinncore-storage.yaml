@@ -1,43 +1,19 @@
-# kind: StorageClass
-# apiVersion: storage.k8s.io/v1
-# metadata:
-#   name: azurefile-premium
-# provisioner: kubernetes.io/azure-file
-# mountOptions:
-#   - dir_mode=0755
-#   - file_mode=0755
-# parameters:
-#   skuName: Premium_LRS
-#   location: northeurope
-
-
-# ---
-
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: altinn-storage-repo-premium-volume-secret
-# type: Opaque
-# data:
-#   azurestorageaccountname: YWx0aW5uZGV2c3RvcmFnZWFjY291bnQ=
-#   azurestorageaccountkey: M040THRjS3lZTnF6MW90Uy9nT0FLRUV0aVl6V2lqcGpkNU4xODh2ZHRzR0M2d2lXbSszK01BM0szd2NLK3lXeURBY3NXSzZnWkpNMnYyaVVNUEZTSnc9PQ==
-
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: altinn-storage-repo-premium-volume
-# spec:
-#   capacity:
-#     storage: 5Gi
-#   accessModes:
-#   - ReadWriteOnce
-#   azureFile:
-#     secretName: altinn-storage-repo-premium-volume-secret
-#     shareName: altinn-storage-repo-premium-volume-secret
-#     readOnly: false
-#   claimRef:
-#     name: altinn-storage-repo-premium-volume-claim
-# ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: altinn-storage-repo-premium-volume
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes:
+  - ReadWriteMany
+  azureFile:
+    secretName: azure-secret
+    shareName: altinndevstorageaccount
+    readOnly: false
+  claimRef:
+    name: altinn-storage-repo-premium-volume-claim
+---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -46,31 +22,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: azurefile-premium
   resources:
     requests:
-      storage: 5Gi
-
-
-# ---
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: ClusterRole
-# metadata:
-#   name: system:azure-cloud-provider
-# rules:
-# - apiGroups: ['']
-#   resources: ['secrets']
-#   verbs:     ['get','create']
-# ---
-# apiVersion: rbac.authorization.k8s.io/v1
-# kind: ClusterRoleBinding
-# metadata:
-#   name: system:azure-cloud-provider
-# roleRef:
-#   kind: ClusterRole
-#   apiGroup: rbac.authorization.k8s.io
-#   name: system:azure-cloud-provider
-# subjects:
-# - kind: ServiceAccount
-#   name: persistent-volume-binder
-#   namespace: kube-system
+      storage: 200Gi
